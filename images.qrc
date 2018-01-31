@@ -71,5 +71,6 @@
         <file>images/au.png</file>
         <file>images/calendar.png</file>
         <file>QSS/main.qss</file>
+        <file>QSS/dlglathe.qss</file>
     </qresource>
 </RCC>
