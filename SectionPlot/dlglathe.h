@@ -19,7 +19,6 @@ public:
 
     ~DlgLathe();
     void initComboBox();
-    void loadQSS();
 
 protected:
     void closeEvent(QCloseEvent *event);
