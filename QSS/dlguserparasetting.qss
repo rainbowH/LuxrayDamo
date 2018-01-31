@@ -1,0 +1,134 @@
+/**********输入框**********/
+QLineEdit {
+        border-radius: 4px;
+        height: 25px;
+        border: 1px solid rgb(111, 156, 207);
+        background: white;
+}
+QLineEdit:enabled {
+        color: rgb(84, 84, 84);
+}
+QLineEdit:enabled:hover, QLineEdit:enabled:focus {
+        color: rgb(51, 51, 51);
+}
+QLineEdit:!enabled {
+        color: rgb(80, 80, 80);
+}
+/**********下拉列表**********/
+QComboBox {
+        height: 25px;
+        border-radius: 4px;
+        border: 1px solid rgb(111, 156, 207);
+        background: white;
+}
+QComboBox:enabled {
+        color: rgb(84, 84, 84);
+}
+QComboBox:!enabled {
+        color: rgb(80, 80, 80);
+}
+QComboBox:enabled:hover, QComboBox:enabled:focus {
+        color: rgb(51, 51, 51);
+}
+QComboBox::drop-down {
+        width: 25px;
+        border: none;
+        background: transparent;
+}
+QComboBox::drop-down:hover {
+        background: rgba(255, 255, 255, 30);
+}
+QComboBox::down-arrow {
+        image: url(:/images/arrowBottom);
+}
+QComboBox::down-arrow:on {
+        /**top: 1px;**/
+}
+/**********按钮**********/
+QToolButton{
+        border-radius: 4px;
+        border: none;
+        width: 120px;
+        height: 47px;
+}
+QToolButton:enabled {
+        background: rgb(120, 170, 180);
+        color: white;
+}
+QToolButton:!enabled {
+        background: rgb(180, 180, 140);
+        color: white;
+}
+QToolButton:enabled:hover{
+        background: rgb(100, 160, 180);
+}
+QToolButton:enabled:pressed{
+        background: rgb(0, 78, 151);
+}
+/*************表格*****************/
+QTableWidget {
+        border: 1px solid rgb(111, 156, 207);
+        background: rgb(224, 238, 255);
+        gridline-color: rgb(111, 156, 207);
+}
+QTableWidget QHeaderView::section
+{
+    background-color:lightblue;
+    color: black;
+    padding-left: 4px;
+    border: 1px solid #6c6c6c;
+}
+QTableWidget::item {
+        padding-left: 5px;
+        padding-right: 5px;
+        border: none;
+        background: white;
+        border-right: 1px solid rgb(111, 156, 207);
+        border-bottom: 1px solid rgb(111, 156, 207);
+}
+QTableWidget::item:selected {
+        background: rgba(255, 255, 255, 100);
+        color: rgb(255, 100, 0);
+}
+QTableWidget::item:selected:!active {
+        color: rgb(65, 65, 65);
+}
+QTableWidget::indicator {
+        width: 20px;
+        height: 20px;
+}
+/******************列表**********************/
+QListWidget
+{
+    border:1px solid gray;
+    background:rgb(224, 238, 255);    /*?????*/
+    color:black;        /*????????*/
+    margin:5px,5px,0px,50px;   /*??????????*/
+}
+
+QListWidget::item
+{
+    padding-top:24px;
+    padding-bottom:4px;
+}
+QListWidget::item:hover
+{
+    show-decoration-selected:5;
+    background:lightblue;
+}
+QListWidget::item:selected
+{
+    /*border:0px;*/
+    background:skyblue;
+    padding:0px;
+    margin:0px;
+    color:red;
+}
+
+/*上次选择后保留的状态，鼠标离开后显示*/
+QListWidget::item:selected:!active
+{
+    border-width:0px;
+    background:lightgreen;
+}
+

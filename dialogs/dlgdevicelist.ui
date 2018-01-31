@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DlgDeviceList</class>
+ <widget class="QDialog" name="DlgDeviceList">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>974</width>
+    <height>516</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>20</y>
+     <width>891</width>
+     <height>421</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="leftMargin">
+     <number>7</number>
+    </property>
+    <property name="topMargin">
+     <number>7</number>
+    </property>
+    <property name="rightMargin">
+     <number>7</number>
+    </property>
+    <property name="bottomMargin">
+     <number>7</number>
+    </property>
+    <item>
+     <widget class="QTableWidget" name="tableWidget">
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>新建行</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>新建行</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>新建行</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>新建行</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>新建行</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>新建行</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>新建行</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>新建行</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>6</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>7</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>8</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>电涡流</string>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="0" column="1">
+       <property name="text">
+        <string/>
+       </property>
+      </item>
+      <item row="1" column="0">
+       <property name="text">
+        <string>序号</string>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="1" column="1">
+       <property name="text">
+        <string>功能</string>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="1" column="2">
+       <property name="text">
+        <string>型号</string>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="1" column="3">
+       <property name="text">
+        <string> 数量</string>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="1" column="4">
+       <property name="text">
+        <string> 厂家</string>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="2" column="0">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="2" column="2">
+       <property name="text">
+        <string>eddyNCDT3005 电涡流位移传感器</string>
+       </property>
+      </item>
+      <item row="2" column="3">
+       <property name="text">
+        <string>1</string>
+       </property>
+      </item>
+      <item row="2" column="4">
+       <property name="text">
+        <string>米铱（北京）测试技术有限公司</string>
+       </property>
+      </item>
+      <item row="3" column="0">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="4" column="0">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="12" column="0">
+       <property name="text">
+        <string>电机</string>
+       </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
+      </item>
+      <item row="13" column="0">
+       <property name="text">
+        <string>序号</string>
+       </property>
+      </item>
+      <item row="13" column="1">
+       <property name="text">
+        <string>功能</string>
+       </property>
+      </item>
+      <item row="13" column="2">
+       <property name="text">
+        <string>型号</string>
+       </property>
+      </item>
+      <item row="13" column="3">
+       <property name="text">
+        <string>数量</string>
+       </property>
+      </item>
+      <item row="13" column="4">
+       <property name="text">
+        <string>厂家</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

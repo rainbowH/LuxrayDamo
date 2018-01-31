@@ -1,0 +1,54 @@
+/**********按钮**********/
+QToolButton{
+    border-radius: 4px;
+    border: none;
+    width: 100;
+    height:45;
+}
+QToolButton:enabled {
+        background: rgb(120, 170, 220);
+        color: white;
+}
+QToolButton:!enabled {
+        background: rgb(180, 180, 180);
+        color: white;
+}
+QToolButton:enabled:hover{
+        background: rgb(100, 160, 220);
+}
+QToolButton:enabled:pressed{
+        background: rgb(0, 78, 161);
+}
+/**********表格**********/
+QTableWidget {
+        border: 1px solid rgb(111, 156, 207);
+        background: rgb(224, 238, 255);
+        gridline-color: rgb(111, 156, 207);
+}
+QTableWidget QHeaderView::section
+{
+    background-color:lightblue;
+    color: black;
+    padding-left: 4px;
+    border: 1px solid #6c6c6c;
+}
+QTableWidget::item {
+        padding-left: 5px;
+        padding-right: 5px;
+        border: none;
+        background: white;
+        border-right: 1px solid rgb(111, 156, 207);
+        border-bottom: 1px solid rgb(111, 156, 207);
+}
+QTableWidget::item:selected {
+        background: rgba(255, 255, 255, 100);
+        color: rgb(255, 100, 0);
+}
+QTableWidget::item:selected:!active {
+        color: rgb(65, 65, 65);
+}
+QTableWidget::indicator {
+        width: 20px;
+        height: 20px;
+}
+

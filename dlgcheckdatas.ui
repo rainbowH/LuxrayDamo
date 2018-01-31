@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DlgCheckDatas</class>
+ <widget class="QDialog" name="DlgCheckDatas">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>584</width>
+    <height>411</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>581</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="mainLayout" stretch="1,4">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
+    <item>
+     <widget class="QWidget" name="SearchWidget" native="true">
+      <widget class="QWidget" name="horizontalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>10</y>
+         <width>361</width>
+         <height>89</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="searchLayout" stretch="1,6,1">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <item>
+         <widget class="QComboBox" name="Combox_Condition">
+          <item>
+           <property name="text">
+            <string>按检测时间查找</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>按检测人查找</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>按车号查找</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>按车轮RFID查找</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>按检测状况查找</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="Txt_SearchContent"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="Btn_Search">
+          <property name="text">
+           <string>查找</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTableView" name="tableView">
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectItems</enum>
+      </property>
+      <property name="textElideMode">
+       <enum>Qt::ElideMiddle</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,37 @@
+/**********按钮**********/
+QToolButton{
+        border-radius: 4px;
+        border: none;
+        width: 200px;
+        height: 25px;
+}
+QToolButton:enabled {
+        background: rgb(120, 170, 220);
+        color: white;
+}
+QToolButton:!enabled {
+        background: rgb(180, 180, 180);
+        color: white;
+}
+QToolButton:enabled:hover{
+        background: rgb(100, 160, 220);
+}
+QToolButton:enabled:pressed{
+        background: rgb(0, 78, 161);
+}
+/**********输入框**********/
+QLineEdit {
+        border-radius: 4px;
+        height: 20px;
+        border: 1px solid rgb(111, 156, 207);
+        background: white;
+}
+QLineEdit:enabled {
+        color: rgb(84, 84, 84);
+}
+QLineEdit:enabled:hover, QLineEdit:enabled:focus {
+        color: rgb(51, 51, 51);
+}
+QLineEdit:!enabled {
+        color: rgb(80, 80, 80);
+}

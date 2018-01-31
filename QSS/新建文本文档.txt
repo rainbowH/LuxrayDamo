@@ -1,0 +1,53 @@
+/**********按钮**********/
+QToolButton#btnMonite{
+        border-radius: 4px;
+        border: none;
+        width: 120px;
+        height: 47px;
+}
+QToolButton#btnMonite:enabled {
+        background: skyblue;
+        color: white;
+}
+QToolButton#btnMonite:!enabled {
+        background: rgb(180, 180, 140);
+        color: white;
+}
+QToolButton#btnMonite:enabled:hover{
+        background: rgb(100, 160, 180);
+}
+QToolButton#btnMonite:enabled:pressed{
+        background: rgb(0, 78, 151);
+}
+/*************表格*****************/
+QTableWidget {
+        border: 1px solid rgb(111, 156, 207);
+        background: rgb(224, 238, 255);
+        gridline-color: rgb(111, 156, 207);
+}
+QTableWidget QHeaderView::section
+{
+    background-color:lightblue;
+    color: black;
+    padding-left: 4px;
+    border: 1px solid #6c6c6c;
+}
+QTableWidget::item {
+        padding-left: 5px;
+        padding-right: 5px;
+        border: none;
+        background: white;
+        border-right: 1px solid rgb(111, 156, 207);
+        border-bottom: 1px solid rgb(111, 156, 207);
+}
+QTableWidget::item:selected {
+        background: rgba(255, 255, 255, 100);
+        color: rgb(255, 100, 0);
+}
+QTableWidget::item:selected:!active {
+        color: rgb(65, 65, 65);
+}
+QTableWidget::indicator {
+        width: 20px;
+        height: 20px;
+}
