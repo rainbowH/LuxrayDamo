@@ -97,7 +97,8 @@ void DlgWelcome::paintEvent(QPaintEvent *event)
 
 void DlgWelcome::on_btnExit_clicked()
 {
-    close();
+   // close();
+    exit(0);
 }
 
 void DlgWelcome::on_btnDevCom_clicked()
