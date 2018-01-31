@@ -13,41 +13,11 @@ DlgPlot::DlgPlot(QWidget *parent) :
     initParam();
     ui->plot->setLayout(ui->gridLayout);
     ui->plot->installEventFilter(this);
-    //从excel中读取数据
-//    WheelsInfoThread * thread = new WheelsInfoThread("E:/Qt/Wheel/车轮踏面不同位置周向数据.xlsx");
-//    connect(thread, SIGNAL(sendDatas(QList<QList<QVariant> >)), this, SLOT(drawPlot(QList<QList<QVariant> >)));
-//    thread->start();
-//    thread->exit();
-    qDebug() <<"plot init OK!";
-
 }
 
 DlgPlot::~DlgPlot()
 {
     delete ui;
-}
-
-
-//添加点
-void DlgPlot::drawCoordPoint(double x, double y)
-{
-qDebug()<<"drawCoordPoint";
-    ui->plot->addGraph();
-    ui->plot->graph(1)->setLineStyle(QCPGraph::lsNone);
-    ui->plot->graph(1)->setScatterStyle(myScatter);
-    ui->plot->graph(1)->addData(x,y);
-    ui->plot->replot();
-    //将当前点保存
-    coordXArr.append(x);
-    coordYArr.append(y);
-    //绘线及文本
-    if(coordXArr.count()==2){
-        drawLines(coordXArr,coordYArr,coordXArr.count());
-        phaseTracerText = new QCPItemText(ui->plot);
-        addTextToVerLine(coordXArr[1],coordYArr[1]);
-        coordXArr.clear();
-        coordYArr.clear();
-    }
 }
 
 //初始化
@@ -91,12 +61,10 @@ void DlgPlot::initParam()
 
     horShift=0.1;
     isHide=false;
-    qDebug()<<"70偏移OK";
 
     //设置隐藏tools
     ui->actioneconomyplan->setVisible(false);
     ui->actionplanline->setVisible(false);
-    qDebug()<<"设置隐藏toolsOK";
     //缩放倍数
     mRangeZoomFactor=0.85;
     //放大缩小次数
@@ -109,165 +77,6 @@ void DlgPlot::initParam()
     setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
     //设置移动的直线
     isMoveLine=false;
-    qDebug()<<"设置移动的直线OK";
-}
-
-//判断点是否在曲线上
-//void DlgPlot::judgePointOnCurve(double x, double y)
-//{
-//    //曲线坐标点
-//    double x_val;
-//    double y_val;
-//    //两坐标的距离
-//    double x_dis;
-//    double y_dis;
-//    int i=0;
-//    for(int j=0;j<xValues.length();j++,i++){
-//        x_val=xValues[j];
-//        y_val=yValues[i];
-//        x_dis=x_val-x;
-//        y_dis=y_val-y;
-//        qreal currentDistance=qSqrt(x_dis*x_dis+y_dis*y_dis);
-//        if(currentDistance<(disPoint/(xMax-xMin)))
-//        {
-//           //画点
-//            if(isMoveLine==true){
-//              drawCoordPoint(lastPoint.x(),lastPoint.y());
-//              isMoveLine=false;
-//            }
-//           else{
-//               drawCoordPoint(x_val,y_val);
-//               cur_index=i;
-//            }
-//             break;
-//        }
-//    }
-//}
-
-
-void DlgPlot::drawLines(QList<double> coordXArr, QList<double> coordYArr,int index)
-{
-    qDebug()<<"drawLines";
-    QList<double> xPoint;
-    QList<double> yPoint;
-
-    //画水平线
-    xPoint.append(coordXArr[0]);
-    yPoint.append(coordYArr[0]);
-    xPoint.append(coordXArr[index-1]);
-    yPoint.append(coordYArr[0]);
-    ui->plot->addGraph();
-    ui->plot->graph()->setData(xPoint.toVector(),yPoint.toVector());
-    ui->plot->graph()->setPen(pen);
-
-    //画垂直线
-    xPoint.clear();
-    yPoint.clear();
-    xPoint.append(coordXArr[index-1]);
-    yPoint.append(coordYArr[0]);
-    xPoint.append(coordXArr[index-1]);
-    yPoint.append(coordYArr[index-1]);
-    ui->plot->addGraph();
-    ui->plot->graph()->setData(xPoint.toVector(),yPoint.toVector());
-    ui->plot->graph()->setPen(pen);
-
-    ui->plot->replot();
-}
-
-//鼠标移动
-void DlgPlot::moveMouse(double xpos, double ypos)
-{
-     qDebug()<<"moveMouse";
-    //曲线坐标点
-    double x_val;
-    double y_val;
-    //两坐标的距离
-    double x_dis;
-    double y_dis;
-    int i=cur_index;
-    int j;
-    if(xpos-coordXArr[0]>0){
-    for(j=cur_index;j<xValues.length();j++,i++){
-        x_val=xValues[j];
-        y_val=yValues[i];
-        x_dis=x_val-xpos;
-        y_dis=y_val-ypos;
-        qreal currentDistance=qSqrt(x_dis*x_dis+y_dis*y_dis);
-        if(currentDistance<(disLine/(xMax-xMin)))
-        {
-           moveLines(x_val,y_val);
-           addTextToVerLine(x_val,y_val);
-           isMoveLine=true;
-           lastPoint.setX(x_val);
-           lastPoint.setY(y_val);
-           break;
-        }
-    }
-  }
-    else{
-        for(j=cur_index;j>=0;j--,i--){
-            x_val=xValues[j];
-            y_val=yValues[i];
-            x_dis=x_val-xpos;
-            y_dis=y_val-ypos;
-            qreal currentDistance=qSqrt(x_dis*x_dis+y_dis*y_dis);
-            if(currentDistance<(disLine/(xMax-xMin)))
-            {
-                moveLines(x_val,y_val);
-                addTextToVerLine(x_val,y_val);
-                isMoveLine=true;
-                lastPoint.setX(x_val);
-                lastPoint.setY(y_val);
-                break;
-            }
-    }
-    }
-
-}
-
-//画水平和垂直移动的线
-void DlgPlot::moveLines(double coordX, double coordY)
-{
-     qDebug()<<"moveLines";
-    QList<double> pos_X;
-    QList<double> pos_Y;
-    //画上水平线
-    pos_X.append(coordXArr[0]);
-    pos_Y.append(coordYArr[0]);
-    pos_X.append(coordX);
-    pos_Y.append(coordYArr[0]);
-    ui->plot->addGraph();
-    ui->plot->graph(2)->setData(pos_X.toVector(),pos_Y.toVector());
-    ui->plot->graph(2)->setPen(pen);
-
-    //画右垂直线
-    pos_X.clear();
-    pos_Y.clear();
-    pos_X.append(coordX);
-    pos_Y.append(coordY);
-    pos_X.append(coordX);
-    pos_Y.append(coordYArr[0]);
-    ui->plot->addGraph();
-    ui->plot->graph(3)->setData(pos_X.toVector(),pos_Y.toVector());
-    ui->plot->graph(3)->setPen(pen);
-
-    ui->plot->replot();
-}
-
-//向竖线边添加信息
-void DlgPlot::addTextToVerLine(double coordX, double coordY)
-{
-    qDebug()<<"addTextToVerLine";
-    //水平距离
-    double ver_Pos=coordYArr[0]-(coordYArr[0]-coordY)/2.0;
-    phaseTracerText->position->setType(QCPItemPosition::ptPlotCoords);//设置文本坐标解析方式，前文中有提到QCPItemPosition类的PositionType枚举
-    phaseTracerText->setPositionAlignment(Qt::AlignRight | Qt::AlignBottom);//设置位置在矩形区域的位置
-    phaseTracerText->position->setCoords(coordX,ver_Pos); // 设置位置，注意第三行代码的枚举类型和这儿的值解析方式有关系
-    QString disText = QString("%1").arg(qAbs(coordY-coordYArr[0]));
-    phaseTracerText->setText(disText);//文本描述
-    phaseTracerText->setTextAlignment(Qt::AlignCenter);//设置文本在矩形区域的位置
-    phaseTracerText->setFont(QFont(font().family(), 9));//设置文本的字体
-    phaseTracerText->setPadding(QMargins(8, 0, 0, 0));//设置文本所在矩形的margins
 }
 
 void DlgPlot::removeAllGraph()
@@ -293,33 +102,46 @@ int DlgPlot::getNearestValueIndex(double value)
                         return i+1;
                 }
             }
-        return -1;
+    return -1;
+}
+
+void DlgPlot::newDialog()
+{
+    if(datas.length()>0){
+        if(isCopyDialog)
+        {
+            this->isCopyDialog = false;
+            ui->actionmodify->setEnabled(false);
+            DlgPlot *dlgplot = new DlgPlot();
+            memcpy(dlgplot, this, sizeof(this));
+            dlgplot->setWindowTitle("半径最小的踏面轮廓图");
+            dlgplot->setWindowFlags(Qt::Dialog);
+            dlgplot->ui->actionmodify->setVisible(false);
+            dlgplot->ui->actioneconomyplan->setVisible(true);
+            dlgplot->ui->actionplanline->setVisible(true);
+            dlgplot->minradius=0.5;
+            dlgplot->isCopyDialog = false;
+            connect(this,SIGNAL(onDrawPlot(QVector<QVector2D>)),dlgplot,SLOT(drawPlot(QVector<QVector2D>)));
+            connect(dlgplot, SIGNAL(closed()), this, SLOT(onRecoveryDialog()));
+            emit onDrawPlot(this->datas);
+            dlgplot->showMaximized();
+        }
+    }
 }
 
 //响应事件
 bool DlgPlot::eventFilter(QObject *obj, QEvent *event){
 
-    qDebug()<<"eventFilter";
-//    //获得鼠标点击坐标
-//    QMouseEvent * mevent = static_cast<QMouseEvent *>(event);
-//    double x_pos=mevent->x();
-//    double y_pos=mevent->y();
-//    //转化为相应坐标轴位置
-//    double x_val = ui->plot->xAxis->pixelToCoord(x_pos);
-//    double y_val = ui->plot->yAxis->pixelToCoord(y_pos);
-
     //弹出窗口
     if((event->type()==QEvent::MouseButtonDblClick) && (((QMouseEvent*)event)->buttons() &Qt::LeftButton))
     {
-        qDebug() << "dbclick";
         if(isCopyDialog){
-            on_actionmodify_triggered();
+            newDialog();
         }
     }
     //鼠标点击事件
     if(event->type() == QEvent::MouseButtonPress)
     {
-         qDebug() << "press";
         //获得鼠标点击坐标
         QMouseEvent * mevent = static_cast<QMouseEvent *>(event);
         double x_pos=mevent->x();
@@ -349,14 +171,6 @@ bool DlgPlot::eventFilter(QObject *obj, QEvent *event){
     }
 
     if((event->type() == QEvent::MouseButtonRelease) || (((QMouseEvent*)event)->button() &Qt::RightButton)){
- qDebug() << "release";
-        //获得鼠标点击坐标
-        QMouseEvent * mevent = static_cast<QMouseEvent *>(event);
-        double x_pos=mevent->x();
-        double y_pos=mevent->y();
-        //转化为相应坐标轴位置
-        double x_val = ui->plot->xAxis->pixelToCoord(x_pos);
-        double y_val = ui->plot->yAxis->pixelToCoord(y_pos);
 
         if(datas.length() > 0)
         {
@@ -368,7 +182,6 @@ bool DlgPlot::eventFilter(QObject *obj, QEvent *event){
     }
     //鼠标移动事件
     if(event->type()==QEvent::MouseMove){
-         qDebug() << "mousemove";
         //获得鼠标点击坐标
         QMouseEvent * mevent = static_cast<QMouseEvent *>(event);
         double x_pos=mevent->x();
@@ -384,44 +197,19 @@ bool DlgPlot::eventFilter(QObject *obj, QEvent *event){
                 oldPoint.setX(x_val);
                 oldPoint.setY(y_val);
             }
-
             if(isSelectPoint){
                 if(diagram_Sh->isSelect)
                     drawMovingDiagram(diagram_Sh,x_val,y_val);
             }
         }
+    }
+    return false;
 }
-return false;
-}
 
-//画出初始的曲线及其坐标
-void DlgPlot::drawPlot(QList<QList<QVariant>> datas){
-
-    qDebug() <<"drawPlot1";
-    //设置plot的触发事件
-    ui->plot->installEventFilter(this);
-
-    //点的参数
-    for(int i=0; i<datas.at(0).length(); i+=2)
-        {
-            yValues << datas.at(0).at(i+1).toDouble();
-            xValues << datas.at(0).at(i).toDouble();;
-        }
-    //坐标轴
-    ui->plot->xAxis->setRange(xMin,xMax);
-    ui->plot->yAxis->setRange(yMin,yMax);
-
-    //曲线图层
-    ui->plot->addGraph();
-    ui->plot->graph(0)->setData(xValues.toVector(), yValues.toVector());
-    ui->plot->graph(0)->installEventFilter(this);
-    ui->plot->replot();
-
-}
 
 //X轴改变
 void DlgPlot::xChangeRange(double xMin, double xMax){
-qDebug() <<"xChangeRange";
+
     this->xMin=xMin;
     this->xMax=xMax;
     ui->plot->replot();
@@ -430,10 +218,10 @@ qDebug() <<"xChangeRange";
 
 //Y轴改变
 void DlgPlot::yChangeRange(double yMin, double yMax){
-qDebug() <<"yChangeRange";
+
     this->yMin=yMin;
     this->yMax=yMax;
-ui->plot->replot();
+    ui->plot->replot();
 }
 
 void DlgPlot::onRecoveryDialog()
@@ -442,9 +230,27 @@ void DlgPlot::onRecoveryDialog()
     ui->actionmodify->setEnabled(true);
 }
 
+void DlgPlot::acceptComboBoxSelected(QString list)
+{
+    qDebug()<<"------"<<list;
+}
+
+void DlgPlot::isDestroyedplan(QObject* object){
+
+
+    ui->actionplanline->setEnabled(true);
+    qDebug()<<tr("结束");
+}
+
+void DlgPlot::isDestroyedeco(QObject* object){
+
+
+    ui->actioneconomyplan->setEnabled(true);
+    qDebug()<<tr("结束");
+}
+
 void DlgPlot::drawPlot(QVector<QVector2D> datas)
 {
-    qDebug() <<"drawPlot";
     this->datas = datas;
     if(this->datas.length() <= 0)
         return;
@@ -469,11 +275,6 @@ void DlgPlot::drawPlot(QVector<QVector2D> datas)
     ui->plot->addGraph();
     ui->plot->graph(0)->setData(xValues.toVector(), yValues.toVector());
 
-    xMin = xValues.at(Arithmetic::getMinIndex(xValues));
-    xMax = xValues.at(Arithmetic::getMaxIndex(xValues));
-    yMin = yValues.at(Arithmetic::getMinIndex(yValues));
-    yMax = yValues.at(Arithmetic::getMaxIndex(yValues));
-
     ui->plot->xAxis->setRange(xMin, xMax);
     ui->plot->yAxis->setRange(yMin, yMax);
 
@@ -489,8 +290,7 @@ void DlgPlot::drawPlot(QVector<QVector2D> datas)
 //获得Y最大值索引
 int DlgPlot::getYMaxIndex()
 {
-    qDebug() <<"this.datas.length = "<<datas.length();
-    double yMax=0.0;
+        double yMax=0.0;
         int index=0;
         for(int i=0;i<datas.length();i++){
 
@@ -563,24 +363,19 @@ void DlgPlot::initDiagram()
 
 void DlgPlot::drawDiagramSh()
 {
-    int yMaxIndex,yOffsetIndex;
+        int yMaxIndex,yOffsetIndex;
        //获得点
        yMaxIndex=getYMaxIndex();
-       qDebug() <<"yMaxIndex = "<<yMaxIndex;
        if(yMaxIndex!=-1){
            diagram_Sh->coordPoints.firstPoint.setX(datas.at(yMaxIndex).x());
            diagram_Sh->coordPoints.firstPoint.setY(datas.at(yMaxIndex).y());
        }
 
        yOffsetIndex=getNearestValueIndex(datas.at(0).x()+offValue);
-        qDebug() <<"yOffsetIndex = "<<yOffsetIndex;
        if(yOffsetIndex!=-1){
            diagram_Sh->coordPoints.secondPoint.setX(datas.at(yOffsetIndex).x());
            diagram_Sh->coordPoints.secondPoint.setY(datas.at(yOffsetIndex).y());
        }
-       qDebug() <<diagram_Sh->coordPoints.firstPoint.x()<<","<<diagram_Sh->coordPoints.firstPoint.y();
-       qDebug() <<diagram_Sh->coordPoints.secondPoint.x()<<","<<diagram_Sh->coordPoints.secondPoint.y();
-
 
        //绘图
        diagram_Sh->drawCoordPoints();
@@ -589,7 +384,7 @@ void DlgPlot::drawDiagramSh()
 
 void DlgPlot::drawDiagramSd()
 {
-    int y70index,firIndex,secondIndex;
+        int y70index,firIndex,secondIndex;
         y70index=getNearestValueIndex(datas.at(0).x()+offValue);
         if(y70index!=-1){
             firIndex=getFirstYOffset10or12cm(datas.at(y70index).y()+yOffValue);
@@ -611,7 +406,7 @@ void DlgPlot::drawDiagramSd()
 
 void DlgPlot::drawDiagramShLinesAndText()
 {
-    Point startPoint,endPoint;
+        Point startPoint,endPoint;
         double xMed,yMed,interval;
 
         startPoint.setX(diagram_Sh->coordPoints.firstPoint.x());
@@ -642,7 +437,7 @@ void DlgPlot::drawDiagramShLinesAndText()
 
 void DlgPlot::drawDiagramSdLinesAndText()
 {
-    Point startPoint,endPoint;
+        Point startPoint,endPoint;
         double xMed,yMed,interval;
 
         startPoint.setX(diagram_Sd->coordPoints.firstPoint.x());
@@ -701,7 +496,6 @@ int DlgPlot::getSecondYOffset10or12cm(double value)
 
 void DlgPlot::addPointOnPlot(Diagram *diagram)
 {
-    qDebug()<<"addPointOnPlot";
     if(diagram->coordPoints.isFirstPoint){
 
             diagram->reDrawCoordPoint(diagram->coordPoints.firstPoint);
@@ -736,22 +530,19 @@ void DlgPlot::hideMeasureLines()
 
 void DlgPlot::showMeasureLines()
 {
-    qDebug() << ui->plot->graphCount();
-
-
     //显示Sh
-        diagram_Sh->drawCoordPoints();
-        diagram_Sh->itemArrowLine->setVisible(true);
-        diagram_Sh->itemLinefirst->setVisible(true);
-        diagram_Sh->itemLinesecond->setVisible(true);
-        diagram_Sh->itemText->setVisible(true);
+    diagram_Sh->drawCoordPoints();
+    diagram_Sh->itemArrowLine->setVisible(true);
+    diagram_Sh->itemLinefirst->setVisible(true);
+    diagram_Sh->itemLinesecond->setVisible(true);
+    diagram_Sh->itemText->setVisible(true);
 
-        //显示Sd
-        diagram_Sd->drawCoordPoints();
-        diagram_Sd->itemArrowLine->setVisible(true);
-        diagram_Sd->itemLinefirst->setVisible(true);
-        diagram_Sd->itemLinesecond->setVisible(true);
-        diagram_Sd->itemText->setVisible(true);
+    //显示Sd
+    diagram_Sd->drawCoordPoints();
+    diagram_Sd->itemArrowLine->setVisible(true);
+    diagram_Sd->itemLinefirst->setVisible(true);
+    diagram_Sd->itemLinesecond->setVisible(true);
+    diagram_Sd->itemText->setVisible(true);
 
 }
 //判断鼠标是否点击到点
@@ -846,14 +637,11 @@ void DlgPlot::drawMovingDiagram(Diagram *diagram, double x, double y)
     if(diagram_Sh==diagram){
         drawDiagramShLinesAndText();
     }
-    //        else if(diagram_Qr==diagram){
-    //              drawDiagramQrLinesAndText();
-    //            }
 }
 
 int DlgPlot::judgeMouseMoveOnCurve(double x, double y)
 {
-    //两坐标的距离
+       //两坐标的距离
        double x_dis;
        double y_dis;
 
@@ -871,24 +659,7 @@ int DlgPlot::judgeMouseMoveOnCurve(double x, double y)
 
 void DlgPlot::on_actionmodify_triggered()
 {
-    if(isCopyDialog)
-    {
-        this->isCopyDialog = false;
-        ui->actionmodify->setEnabled(false);
-        DlgPlot *dlgplot = new DlgPlot();
-        memcpy(dlgplot, this, sizeof(this));
-        dlgplot->setWindowTitle("半径最小的踏面轮廓图");
-        dlgplot->setWindowFlags(Qt::Dialog);
-        dlgplot->ui->actionmodify->setVisible(false);
-        dlgplot->ui->actioneconomyplan->setVisible(true);
-        dlgplot->ui->actionplanline->setVisible(true);
-        dlgplot->minradius=0.5;
-        dlgplot->isCopyDialog = false;
-        connect(this,SIGNAL(onDrawPlot(QVector<QVector2D>)),dlgplot,SLOT(drawPlot(QVector<QVector2D>)));
-        connect(dlgplot, SIGNAL(closed()), this, SLOT(onRecoveryDialog()));
-        emit onDrawPlot(this->datas);
-        dlgplot->showMaximized();
-    }
+   newDialog();
 }
 //显示隐藏计测线
 void DlgPlot::on_actionhide_triggered()
@@ -928,7 +699,7 @@ void DlgPlot::on_actioneconomyplan_triggered()
     DlgLathe *dlglathe=new DlgLathe(list);
     dlglathe->setWindowTitle("经济镟");
     dlglathe->show();
-    connect(dlglathe,SIGNAL(latheDestroyed(QObject*)),this,SLOT(isDestroyedeco(QObject*)));
+    connect(dlglathe,SIGNAL(isDestroyed(QObject*)),this,SLOT(isDestroyedeco(QObject*)));
     connect(dlglathe,SIGNAL(comboBoxSelected(QString)),this,SLOT(acceptComboBoxSelected(QString)));
     connect(dlglathe,SIGNAL(destroyed(QObject*)),this,SLOT(isDestroyedeco(QObject*)));
 }
@@ -941,5 +712,6 @@ void DlgPlot::on_actionplanline_triggered()
     dlglathe->setWindowTitle("计划镟");
     dlglathe->show();
     connect(dlglathe,SIGNAL(comboBoxSelected(QString)),this,SLOT(acceptComboBoxSelected(QString)));
+    connect(dlglathe,SIGNAL(isDestroyed(QObject*)),this,SLOT(isDestroyedplan(QObject*)));
     connect(dlglathe,SIGNAL(destroyed(QObject*)),this,SLOT(isDestroyedplan(QObject*)));
 }

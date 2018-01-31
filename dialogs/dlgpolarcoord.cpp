@@ -365,7 +365,7 @@ void DlgPolarCoord::on_btnDamageAnalyze_clicked()
 
 void DlgPolarCoord::getRList()
 {
-    QFile file("F:/wheels/数据/01-26/极坐标半径.txt");
+    QFile file("./极坐标半径.txt");
     file.open(QFile::ReadOnly);
     QString str = file.readLine();
     while(str.trimmed() != "")
@@ -429,7 +429,7 @@ void DlgPolarCoord::on_btnGraze_clicked()
     ui->verticalLayout->addWidget(ui->grazeTable);
     ui->grazeTable->setVisible(true);
     ui->grazeTable->clearContents();
-
+    qDebug()<<tr("擦伤分析");
     //擦伤分析
     QList<Graze *> grazeList = Arithmetic::GrazeAnalyze(rList, rMean);
 //    for(int i=0; i< grazeList.length(); i++)

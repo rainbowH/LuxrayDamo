@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
-#include <qcomplexnumber.h>
+//#include <qcomplexnumber.h>
 #include "fftw3.h"
 #define PI 3.1415926
 

@@ -21,7 +21,7 @@ DlgDevCommunic::DlgDevCommunic(bool isConnect, QWidget *parent) :
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(4,QHeaderView::Stretch);
 
     if(isConnected)
-        ui->btnConnect->setText("断开连接");
+        ui->btnConnect->setText("断开");
     else
         ui->btnConnect->setText("连接");
 }
@@ -79,7 +79,7 @@ void DlgDevCommunic::on_btnConnect_clicked()
 
 void DlgDevCommunic::onConnect()
 {
-    ui->btnConnect->setText("断开连接");
+    ui->btnConnect->setText("断开");
     ui->btnConnect->setIcon(QIcon(":/images/disconnect.png"));
     ui->lblConnectState->setText("已连接");
     ui->lblConnectState->setStyleSheet("color: rgb(90, 249, 65);");

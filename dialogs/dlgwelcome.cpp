@@ -8,7 +8,6 @@ DlgWelcome::DlgWelcome(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground, true);
     mw = new MainWindow();
 //    ui->btnDevCom->setStyleSheet("background-color: rgba(122, 255, 111, 0.3);");
     connect(this, SIGNAL(openDevCommunicate()), mw, SLOT(on_actionDevCommu_triggered()));

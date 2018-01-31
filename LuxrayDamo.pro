@@ -45,7 +45,6 @@ SOURCES += \
     importthread.cpp \
     main.cpp \
     mainwindow.cpp \
-    qcustomplot.cpp \
     tableview.cpp \
     tcpclientsocket.cpp \
     tcpserver.cpp \
@@ -114,7 +113,8 @@ SOURCES += \
     SelfWidget/ticks.cpp \
     SectionPlot/coordpoints.cpp \
     SectionPlot/diagram.cpp \
-    SectionPlot/dlglathe.cpp
+    SectionPlot/dlglathe.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -124,7 +124,6 @@ HEADERS += \
     exportthread.h \
     importthread.h \
     mainwindow.h \
-    qcustomplot.h \
     wheelsdatathread.h \
     wheelsinfothread.h \
     dialogs/dlgcheckdatas.h \
@@ -219,7 +218,9 @@ HEADERS += \
     SelfWidget/ticks.h \
     SectionPlot/coordpoints.h \
     SectionPlot/diagram.h \
-    SectionPlot/dlglathe.h
+    SectionPlot/dlglathe.h \
+    qcustomplot.h \
+    qcustomplot.h
 
     SelfWidget/toolbutton.h
 

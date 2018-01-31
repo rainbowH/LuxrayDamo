@@ -8822,7 +8822,7 @@ void QCPAxis::mousePressEvent(QMouseEvent *event, const QVariant &details)
     return;
   }
   
-  if (event->buttons() & Qt::LeftButton)
+  if (event->buttons() & Qt::RightButton)
   {
     mDragging = true;
     // initialize antialiasing backup in case we start dragging:
@@ -16800,6 +16800,8 @@ QCPAxisRect::QCPAxisRect(QCustomPlot *parentPlot, bool setupDefaultAxes) :
   mAxes.insert(QCPAxis::atTop, QList<QCPAxis*>());
   mAxes.insert(QCPAxis::atBottom, QList<QCPAxis*>());
   
+  //myself variable
+  scale=0;
   if (setupDefaultAxes)
   {
     QCPAxis *xAxis = addAxis(QCPAxis::atBottom);
@@ -17770,7 +17772,7 @@ void QCPAxisRect::layoutChanged()
 void QCPAxisRect::mousePressEvent(QMouseEvent *event, const QVariant &details)
 {
   Q_UNUSED(details)
-  if (event->buttons() & Qt::LeftButton)
+  if (event->buttons() & Qt::RightButton)
   {
     mDragging = true;
     // initialize antialiasing backup in case we start dragging:
@@ -17887,34 +17889,43 @@ void QCPAxisRect::mouseReleaseEvent(QMouseEvent *event, const QPointF &startPos)
 */
 void QCPAxisRect::wheelEvent(QWheelEvent *event)
 {
-  // Mouse range zooming interaction:
-  if (mParentPlot->interactions().testFlag(QCP::iRangeZoom))
-  {
-    if (mRangeZoom != 0)
+    // Mouse range zooming interaction:
+    if (mParentPlot->interactions().testFlag(QCP::iRangeZoom))
     {
-      double factor;
       double wheelSteps = event->delta()/120.0; // a single step delta is +/-120 usually
-      if (mRangeZoom.testFlag(Qt::Horizontal))
+      if((scale>-3||(wheelSteps==1))&&(scale<3||(wheelSteps==-1)))
       {
-        factor = qPow(mRangeZoomFactorHorz, wheelSteps);
-        for (int i=0; i<mRangeZoomHorzAxis.size(); ++i)
-        {
-          if (!mRangeZoomHorzAxis.at(i).isNull())
-            mRangeZoomHorzAxis.at(i)->scaleRange(factor, mRangeZoomHorzAxis.at(i)->pixelToCoord(event->pos().x()));
-        }
-      }
-      if (mRangeZoom.testFlag(Qt::Vertical))
+      if (mRangeZoom != 0)
       {
-        factor = qPow(mRangeZoomFactorVert, wheelSteps);
-        for (int i=0; i<mRangeZoomVertAxis.size(); ++i)
+        double factor;
+        if (mRangeZoom.testFlag(Qt::Horizontal))
         {
-          if (!mRangeZoomVertAxis.at(i).isNull())
-            mRangeZoomVertAxis.at(i)->scaleRange(factor, mRangeZoomVertAxis.at(i)->pixelToCoord(event->pos().y()));
+          factor = qPow(mRangeZoomFactorHorz, wheelSteps);
+          for (int i=0; i<mRangeZoomHorzAxis.size(); ++i)
+          {
+            if (!mRangeZoomHorzAxis.at(i).isNull())
+              mRangeZoomHorzAxis.at(i)->scaleRange(factor, mRangeZoomHorzAxis.at(i)->pixelToCoord(event->pos().x()));
+          }
         }
+        if (mRangeZoom.testFlag(Qt::Vertical))
+        {
+          factor = qPow(mRangeZoomFactorVert, wheelSteps);
+          for (int i=0; i<mRangeZoomVertAxis.size(); ++i)
+          {
+            if (!mRangeZoomVertAxis.at(i).isNull())
+              mRangeZoomVertAxis.at(i)->scaleRange(factor, mRangeZoomVertAxis.at(i)->pixelToCoord(event->pos().y()));
+          }
+        }
+        if(factor>1){
+            scale--;
+        }
+        else{
+            scale++;
+        }
+        mParentPlot->replot();
       }
-      mParentPlot->replot();
+     }
     }
-  }
 }
 /* end of 'src/layoutelements/layoutelement-axisrect.cpp' */
 

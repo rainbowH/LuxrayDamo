@@ -20,12 +20,14 @@ public:
     ~DlgLathe();
     void initComboBox();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 signals:
     void comboBoxSelected(QString list);
-
+    void isDestroyed(QObject *);
 private slots:
     void on_pushButton_Cancle_clicked();
-
     void on_pushButton_OK_clicked();
 
 private:

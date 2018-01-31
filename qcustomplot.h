@@ -662,7 +662,7 @@ public:
   
   // non-virtual methods:
   void replot();
-  
+  void draw(QCPPainter *painter);
 protected:
   // property members:
   QCustomPlot *mParentPlot;
@@ -676,7 +676,7 @@ protected:
   QWeakPointer<QCPAbstractPaintBuffer> mPaintBuffer;
   
   // non-virtual methods:
-  void draw(QCPPainter *painter);
+  //void draw(QCPPainter *painter);
   void drawToPaintBuffer();
   void addChild(QCPLayerable *layerable, bool prepend);
   void removeChild(QCPLayerable *layerable);
@@ -4592,7 +4592,10 @@ class QCP_LIB_DECL QCPAxisRect : public QCPLayoutElement
 public:
   explicit QCPAxisRect(QCustomPlot *parentPlot, bool setupDefaultAxes=true);
   virtual ~QCPAxisRect();
-  
+
+  //myself variable  zoom scale
+  double scale;
+
   // getters:
   QPixmap background() const { return mBackgroundPixmap; }
   QBrush backgroundBrush() const { return mBackgroundBrush; }
@@ -5177,7 +5180,7 @@ public:
   
   explicit QCPGraph(QCPAxis *keyAxis, QCPAxis *valueAxis);
   virtual ~QCPGraph();
-  
+  virtual void draw(QCPPainter *painter) Q_DECL_OVERRIDE;
   // getters:
   QSharedPointer<QCPGraphDataContainer> data() const { return mDataContainer; }
   LineStyle lineStyle() const { return mLineStyle; }
@@ -5204,6 +5207,8 @@ public:
   virtual QCPRange getKeyRange(bool &foundRange, QCP::SignDomain inSignDomain=QCP::sdBoth) const Q_DECL_OVERRIDE;
   virtual QCPRange getValueRange(bool &foundRange, QCP::SignDomain inSignDomain=QCP::sdBoth, const QCPRange &inKeyRange=QCPRange()) const Q_DECL_OVERRIDE;
   
+  //手动添加
+  void drawLinePlot(QCPPainter *painter, const QVector<QPointF> &lines) const;
 protected:
   // property members:
   LineStyle mLineStyle;
@@ -5213,13 +5218,13 @@ protected:
   bool mAdaptiveSampling;
   
   // reimplemented virtual methods:
-  virtual void draw(QCPPainter *painter) Q_DECL_OVERRIDE;
+  //virtual void draw(QCPPainter *painter) Q_DECL_OVERRIDE;
   virtual void drawLegendIcon(QCPPainter *painter, const QRectF &rect) const Q_DECL_OVERRIDE;
   
   // introduced virtual methods:
   virtual void drawFill(QCPPainter *painter, QVector<QPointF> *lines) const;
   virtual void drawScatterPlot(QCPPainter *painter, const QVector<QPointF> &scatters, const QCPScatterStyle &style) const;
-  virtual void drawLinePlot(QCPPainter *painter, const QVector<QPointF> &lines) const;
+  //virtual void drawLinePlot(QCPPainter *painter, const QVector<QPointF> &lines) const;
   virtual void drawImpulsePlot(QCPPainter *painter, const QVector<QPointF> &lines) const;
   
   virtual void getOptimizedLineData(QVector<QCPGraphData> *lineData, const QCPGraphDataContainer::const_iterator &begin, const QCPGraphDataContainer::const_iterator &end) const;

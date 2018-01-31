@@ -66,6 +66,7 @@ private slots:
 
     void on_btnGraze_clicked();
 
+
 private:
     Ui::DlgPolarCoord *ui;
     QPolarChart *chart;

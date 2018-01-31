@@ -23,15 +23,10 @@ class DlgPlot : public QMainWindow
 public:
     explicit DlgPlot(QWidget *parent = 0);
     ~DlgPlot();
-    void drawCoordPoint(double x,double y);
     void initParam();
-//    void judgePointOnCurve(double x,double y);
-    void drawLines(QList<double> coordXArr,QList<double> coordYArr,int index);
-    void moveMouse(double xpos,double ypos);
-    void moveLines(double coordX,double coordY);
-    void addTextToVerLine(double coordX,double coordY);
     void removeAllGraph();
     int getNearestValueIndex(double value);
+    void newDialog();
 
     QVector<QVector2D> datas;
 signals:
@@ -40,10 +35,13 @@ signals:
     void onDrawPlot(QVector<QVector2D> datas);
     void closed();
 public slots:
-    void drawPlot(QList<QList<QVariant>> datas);
     void xChangeRange(double xMin, double xMax);
     void yChangeRange(double yMin, double yMax);
     void onRecoveryDialog();//用于关闭放大窗口后恢复原始嵌入窗口的一些属性
+
+    void acceptComboBoxSelected(QString list);
+    void isDestroyedplan(QObject* object);
+    void isDestroyedeco(QObject* object);
 
     void drawPlot(QVector<QVector2D> datas);
     int getYMaxIndex();

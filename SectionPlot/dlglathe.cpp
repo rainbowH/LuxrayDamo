@@ -22,6 +22,11 @@ void DlgLathe::initComboBox()
     }
 }
 
+void DlgLathe::closeEvent(QCloseEvent *event)
+{
+    emit isDestroyed(this);
+}
+
 void DlgLathe::on_pushButton_Cancle_clicked()
 {
     emit destroyed();
