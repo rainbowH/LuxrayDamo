@@ -11,6 +11,8 @@ public:
     Point secondPoint;
     bool isFirstPoint;
     bool isSecondPoint;
+    void setFirstPointX();
+    void setSecondPointX();
 };
 
 #endif // COORDPOINTS_H

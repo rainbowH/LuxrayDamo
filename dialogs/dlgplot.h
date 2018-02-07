@@ -27,6 +27,7 @@ public:
     void removeAllGraph();
     int getNearestValueIndex(double value);
     void newDialog();
+    QVector<QVector2D> drawPlotOnCenter(QVector<QVector2D> datas);
 
     QVector<QVector2D> datas;
 signals:
@@ -97,6 +98,11 @@ private:
     int scaleNum;           //放大缩小次数
     double xCoordOffset;    //x轴扩张
 
+    double xMinROffset;     //最小半径x轴偏移
+    double xScale;          //x轴的缩小倍数
+
+    bool isShowMearsureLines; //是否显示计测线
+    bool isZoom;              //是否允许放大缩小
 
     void drawCoodinate();
     void initDiagram();

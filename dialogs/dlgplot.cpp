@@ -3,6 +3,8 @@
 #include "arithmetic.h"
 #include "wheelsinfothread.h"
 #include <QSharedPointer>
+#include <QVector2D>
+#include <QVector>
 
 DlgPlot::DlgPlot(QWidget *parent) :
     QMainWindow(parent),
@@ -40,7 +42,11 @@ void DlgPlot::initParam()
     pen.setColor(Qt::black);
     pen.setWidth(1);
     //设置放大缩小
-    ui->plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    isZoom=true;
+    if(isZoom){
+      ui->plot->setInteractions(QCP::iRangeZoom);
+    }
+    ui->plot->setInteractions(QCP::iRangeDrag | QCP::iSelectItems);
     connect(ui->plot->xAxis,SIGNAL(rangeChanged(QCPRange)),this,SIGNAL(xRangeChanged(QCPRange)));
     connect(ui->plot->yAxis,SIGNAL(rangeChanged(QCPRange)),this,SIGNAL(yRangeChanged(QCPRange)));
     //坐标轴距离
@@ -48,7 +54,7 @@ void DlgPlot::initParam()
     xMax=150;
     yMin=380.00;
     yMax=415.00;
-    ui->plot->setInteractions(QCP::iRangeZoom | QCP::iRangeDrag | QCP::iSelectItems);
+
     //70偏移
     offValue=70.0;
     textOffset=5;
@@ -77,6 +83,10 @@ void DlgPlot::initParam()
     setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
     //设置移动的直线
     isMoveLine=false;
+
+    xMinROffset=0;
+    xScale=1;
+    isShowMearsureLines=true;
 }
 
 void DlgPlot::removeAllGraph()
@@ -114,19 +124,38 @@ void DlgPlot::newDialog()
             ui->actionmodify->setEnabled(false);
             DlgPlot *dlgplot = new DlgPlot();
             memcpy(dlgplot, this, sizeof(this));
-            dlgplot->setWindowTitle("半径最小的踏面轮廓图");
-            dlgplot->setWindowFlags(Qt::Dialog);
+            dlgplot->setWindowTitle("镟修方案");
+            dlgplot->setWindowFlags(Qt::Window);
             dlgplot->ui->actionmodify->setVisible(false);
             dlgplot->ui->actioneconomyplan->setVisible(true);
             dlgplot->ui->actionplanline->setVisible(true);
+            dlgplot->ui->actionhide->setVisible(false);
+            dlgplot->ui->ZoomIn->setVisible(false);
+            dlgplot->ui->ZoomOut->setVisible(false);
+            dlgplot->isShowMearsureLines=false;
+            dlgplot->isZoom=false;
+            dlgplot->ui->plot->removeEventFilter(dlgplot);
+            xMinROffset=30;
+            xScale=0.6;
             dlgplot->minradius=0.5;
             dlgplot->isCopyDialog = false;
+            QVector<QVector2D> dlgplotdatas=drawPlotOnCenter(this->datas);
             connect(this,SIGNAL(onDrawPlot(QVector<QVector2D>)),dlgplot,SLOT(drawPlot(QVector<QVector2D>)));
             connect(dlgplot, SIGNAL(closed()), this, SLOT(onRecoveryDialog()));
-            emit onDrawPlot(this->datas);
+            emit onDrawPlot(dlgplotdatas);
+
             dlgplot->showMaximized();
         }
     }
+}
+
+QVector<QVector2D> DlgPlot::drawPlotOnCenter(QVector<QVector2D> datas)
+{
+    QVector<QVector2D> datasChange;
+    for(int i=0;i<datas.length();i++){
+        datasChange.append(QVector2D(datas.at(i).x()*xScale+xMinROffset,datas.at(i).y()));
+    }
+    return datasChange;
 }
 
 //响应事件
@@ -280,11 +309,12 @@ void DlgPlot::drawPlot(QVector<QVector2D> datas)
 
 
     drawCoodinate();
-    initDiagram();
+    if(isShowMearsureLines){
+        initDiagram();
+        drawDiagramSh();
+        drawDiagramSd();
+    }
 
-    drawDiagramSh();
-
-    drawDiagramSd();
     ui->plot->replot();
 }
 //获得Y最大值索引
@@ -304,6 +334,7 @@ int DlgPlot::getYMaxIndex()
 
 void DlgPlot::closeEvent(QCloseEvent *event)
 {
+
     emit closed();
 }
 
@@ -386,13 +417,20 @@ void DlgPlot::drawDiagramSd()
 {
         int y70index,firIndex,secondIndex;
         y70index=getNearestValueIndex(datas.at(0).x()+offValue);
+        qDebug()<<"70 pointIndex"<<y70index;
         if(y70index!=-1){
             firIndex=getFirstYOffset10or12cm(datas.at(y70index).y()+yOffValue);
             secondIndex=getSecondYOffset10or12cm(datas.at(y70index).y()+yOffValue);
         }
+        qDebug()<<"first index"<<firIndex;
+        qDebug()<<"second index"<<secondIndex;
         if(firIndex!=-1){
             diagram_Sd->coordPoints.firstPoint.setX(datas.at(firIndex).x());
             diagram_Sd->coordPoints.firstPoint.setY(datas.at(firIndex).y());
+        }
+        else{
+            diagram_Sd->coordPoints.firstPoint.setX(datas.at(0).x());
+            diagram_Sd->coordPoints.firstPoint.setY(datas.at(0).y());
         }
         if(secondIndex!=-1){
             diagram_Sd->coordPoints.secondPoint.setX(datas.at(secondIndex).x());
@@ -469,9 +507,9 @@ void DlgPlot::drawDiagramSdLinesAndText()
 int DlgPlot::getFirstYOffset10or12cm(double value)
 {
     for(int i=0;i<datas.length();i++){
-            if((datas.at(i).y() - value <= 0)&& (datas.at(i+1).y() - value >= 0))
+            if((datas.at(i).y() - value <= 0)&& (datas.at(i+1).y() - value > 0))
             {
-                if(qAbs(datas.at(i).y() - value) < qAbs(datas.at(i+1).y() - value))
+                if(qAbs(datas.at(i).y() - value) <= qAbs(datas.at(i+1).y() - value))
                     return i;
                 else
                     return i+1;
@@ -684,7 +722,7 @@ void DlgPlot::on_actionsaveDiagram_triggered()
 {
     QString filename=QFileDialog::getSaveFileName(this,tr("输出图表"),tr("demo.png"));
     if(!filename.isEmpty()){
-        if(ui->plot->savePng(filename,ui->plot->width(),ui->plot->height())){
+        if(ui->plot->savePng(filename,700,800)){
             qDebug()<<tr("保存成功");
         }else{
             qDebug()<<tr("保存失败");
@@ -702,6 +740,7 @@ void DlgPlot::on_actioneconomyplan_triggered()
     connect(dlglathe,SIGNAL(isDestroyed(QObject*)),this,SLOT(isDestroyedeco(QObject*)));
     connect(dlglathe,SIGNAL(comboBoxSelected(QString)),this,SLOT(acceptComboBoxSelected(QString)));
     connect(dlglathe,SIGNAL(destroyed(QObject*)),this,SLOT(isDestroyedeco(QObject*)));
+    connect(this,SIGNAL(closed()),dlglathe,SLOT(close()));
 }
 //计划旋
 void DlgPlot::on_actionplanline_triggered()
@@ -714,4 +753,5 @@ void DlgPlot::on_actionplanline_triggered()
     connect(dlglathe,SIGNAL(comboBoxSelected(QString)),this,SLOT(acceptComboBoxSelected(QString)));
     connect(dlglathe,SIGNAL(isDestroyed(QObject*)),this,SLOT(isDestroyedplan(QObject*)));
     connect(dlglathe,SIGNAL(destroyed(QObject*)),this,SLOT(isDestroyedplan(QObject*)));
+    connect(this,SIGNAL(closed()),dlglathe,SLOT(close()));
 }
