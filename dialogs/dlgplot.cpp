@@ -29,13 +29,11 @@ void DlgPlot::initParam()
     backRole.setColor("skyblue");
     backRole.setStyle(Qt::SolidPattern);
     ui->plot->setBackground(backRole);
-    qDebug() <<"初始化背景色OK";
     //绘点
     myScatter.setShape(QCPScatterStyle::ssDisc);
     myScatter.setPen(QPen(Qt::red));
     myScatter.setBrush(QBrush(Qt::white));
     myScatter.setSize(4);
-    qDebug() <<"绘点OK";
     //构造一个文本
     phaseTracerText = new QCPItemText(ui->plot);
     //设置笔
@@ -189,11 +187,13 @@ bool DlgPlot::eventFilter(QObject *obj, QEvent *event){
             if(isSelectPoint){
                 if(diagram_Sh->isSelect)
                     addPointOnPlot(diagram_Sh);
+                    this->setCursor(Qt::ArrowCursor);
             }
             else{
                 isSelectPoint=judgeIsClickPoint(diagram_Sh,x_val,y_val);
                 if(isSelectPoint){
                     diagram_Sh->isSelect=isSelectPoint;
+                    this->setCursor(Qt::PointingHandCursor);
                 }
             }
         }
